@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>mvc.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="%D0%BF%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5-%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-mvc-%D0%B2-php-83">Практическое задание: MVC в PHP 8.3+</h1>
+<h2 id="%F0%9F%93%9A-%D1%87%D0%B0%D1%81%D1%82%D1%8C-1-%D1%82%D0%B5%D0%BE%D1%80%D0%B8%D1%8F-20-30-%D0%BC%D0%B8%D0%BD%D1%83%D1%82">📚 Часть 1: Теория (20-30 минут)</h2>
+<h3 id="11-%D0%BF%D0%B0%D1%82%D1%82%D0%B5%D1%80%D0%BD-mvc-model-view-controller">1.1 Паттерн MVC (Model-View-Controller)</h3>
+<p><strong>MVC</strong> — архитектурный паттерн, разделяющий приложение на три компонента:</p>
+<table>
+<thead>
+<tr>
+<th>Компонент</th>
+<th>Ответственность</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Model</strong></td>
+<td>Данные и бизнес-логика</td>
+</tr>
+<tr>
+<td><strong>View</strong></td>
+<td>Отображение данных (UI)</td>
+</tr>
+<tr>
+<td><strong>Controller</strong></td>
+<td>Обработка запросов, связь Model и View</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-mermaid"><div class="mermaid">graph LR
+    User((Пользователь)) -->|1. Запрос| Controller
+    Controller -->|2. Запрос данных| Model
+    Model -->|3. Возврат данных| Controller
+    Controller -->|4. Передача во View| View
+    View -->|5. HTML ответ| User
+</div></code></pre>
+<p><strong>Преимущества MVC:</strong></p>
+<ul>
+<li>Разделение ответственности (SoC)</li>
+<li>Переиспользование моделей</li>
+<li>Тестируемость компонентов</li>
+<li>Масштабируемость</li>
+</ul>
+<h3 id="12-front-controller">1.2 Front Controller</h3>
+<p><strong>Front Controller</strong> — паттерн, при котором все запросы проходят через единую точку входа (обычно <code>index.php</code>).</p>
+<pre><code class="language-mermaid"><div class="mermaid">graph TD
+    Request[HTTP Request] --> FrontController[index.php<br/>Front Controller]
+    FrontController --> Router[Router<br/>Маршрутизация]
+    Router --> Controller[Controller]
+    Controller --> Model[Model/Repository]
+    Controller --> View[View/Template]
+    View --> Response[HTTP Response]
+    FrontController --> Response
+</div></code></pre>
+<p><strong>Проблема без Front Controller:</strong></p>
+<pre><code class="language-mermaid"><div class="mermaid">graph LR
+    subgraph "Без Front Controller"
+        A[page1.php] 
+        B[page2.php]
+        C[news.php]
+        D[admin.php]
+    end
+</div></code></pre>
+<p><strong>Решение с Front Controller:</strong></p>
+<pre><code class="language-mermaid"><div class="mermaid">graph LR
+    subgraph "С Front Controller"
+        Request --> index.php
+        index.php --> Router
+        Router --> A[HomeController]
+        Router --> B[NewsController]
+        Router --> C[AdminController]
+    end
+</div></code></pre>
+<h3 id="13-%D0%BF%D0%BE%D0%BB%D0%BD%D1%8B%D0%B9-%D0%B6%D0%B8%D0%B7%D0%BD%D0%B5%D0%BD%D0%BD%D1%8B%D0%B9-%D1%86%D0%B8%D0%BA%D0%BB-%D0%B7%D0%B0%D0%BF%D1%80%D0%BE%D1%81%D0%B0">1.3 Полный жизненный цикл запроса</h3>
+<pre><code class="language-mermaid"><div class="mermaid">sequenceDiagram
+    participant Browser
+    participant Server as Web Server
+    participant FC as Front Controller
+    participant Router
+    participant Ctrl as Controller
+    participant Repo as Repository
+    participant View
+    
+    Browser->>Server: GET /news/1
+    Server->>FC: index.php + $_SERVER
+    FC->>FC: Создание PSR-7 Request
+    FC->>Router: dispatch($request)
+    Router->>Router: Поиск маршрута
+    Router->>Ctrl: Вызов контроллера
+    Ctrl->>Repo: findById(1)
+    Repo-->>Ctrl: News|null
+    Ctrl->>View: render('news/show', $data)
+    View-->>Ctrl: HTML string
+    Ctrl-->>FC: PSR-7 Response
+    FC-->>Server: emit($response)
+    Server-->>Browser: HTML (200 OK)
+</div></code></pre>
+<h3 id="14-%D0%BF%D0%B0%D1%82%D1%82%D0%B5%D1%80%D0%BD-repository">1.4 Паттерн Repository</h3>
+<p>Repository абстрагирует работу с данными, предоставляя коллекционный интерфейс:</p>
+<pre><code class="language-mermaid"><div class="mermaid">graph TD
+    Controller --> Repository
+    Repository --> MockData[Mock/Array]
+    Repository -->|или| Database[MySQL/PDO]
+    Repository -->|или| API[REST API]
+    Repository --> Model[Model Objects]
+</div></code></pre>
+<p><strong>Зачем Repository?</strong></p>
+<ul>
+<li>Контроллер не знает источник данных</li>
+<li>Легко заменить реализацию (mock → DB)</li>
+<li>Централизация бизнес-правил доступа к данным</li>
+</ul>
+<h3 id="15-psr-7-%D0%B8-%D1%81%D0%BE%D0%B2%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5-http">1.5 PSR-7 и современные HTTP</h3>
+<p><strong>PSR-7 (HTTP Message Interface)</strong> — стандарт описания HTTP-сообщений:</p>
+<ul>
+<li><code>ServerRequestInterface</code> — входящий запрос</li>
+<li><code>ResponseInterface</code> — исходящий ответ</li>
+<li><code>StreamInterface</code> — тело сообщения</li>
+</ul>
+<pre><code class="language-mermaid"><div class="mermaid">graph LR
+    subgraph PSR-7
+        SR[ServerRequestInterface]
+        RI[ResponseInterface]
+        SI[StreamInterface]
+    end
+    
+    subgraph "Реализации"
+        D[Laminas Diactoros]
+        G[Guzzle PSR-7]
+        N[Nyholm PSR-7]
+    end
+    
+    SR -.-> D
+    SR -.-> G
+    SR -.-> N
+</div></code></pre>
+<h3 id="16-%D0%B8%D1%82%D0%BE%D0%B3%D0%BE%D0%B2%D0%B0%D1%8F-%D0%B0%D1%80%D1%85%D0%B8%D1%82%D0%B5%D0%BA%D1%82%D1%83%D1%80%D0%B0-%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%B0">1.6 Итоговая архитектура проекта</h3>
+<pre><code class="language-mermaid"><div class="mermaid">graph TB
+    subgraph "public/"
+        index.php[index.php<br/>Front Controller]
+    end
+    
+    subgraph "src/Router/"
+        routes.php
+    end
+    
+    subgraph "src/Controllers/"
+        HomeController
+        NewsController
+        AboutController
+    end
+    
+    subgraph "src/Models/"
+        News
+        Page
+    end
+    
+    subgraph "src/Repositories/"
+        NewsRepository
+        PageRepository
+    end
+    
+    subgraph "resources/views/"
+        layouts/main.php
+        home/index.php
+        news/index.php
+        news/show.php
+        about/index.php
+    end
+    
+    index.php --> routes.php
+    routes.php --> HomeController
+    routes.php --> NewsController
+    routes.php --> AboutController
+    HomeController --> PageRepository
+    NewsController --> NewsRepository
+    PageRepository --> Page
+    NewsRepository --> News
+    HomeController --> layouts/main.php
+    NewsController --> news/index.php
+    NewsController --> news/show.php
+</div></code></pre>
+<hr>
+<h2 id="%F0%9F%9B%A0%EF%B8%8F-%D1%87%D0%B0%D1%81%D1%82%D1%8C-2-%D1%80%D0%B5%D0%B0%D0%BB%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F-mvc--front-controller">🛠️ Часть 2: Реализация MVC + Front Controller</h2>
+<h3 id="21-%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D0%B0-%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%B0">2.1 Структура проекта</h3>
+<pre class="hljs"><code><div>mvc-site/
+├── public/
+│   ├── index.php          # Front Controller (точка входа)
+│   └── css/
+├── src/
+│   ├── Controllers/
+│   │   ├── HomeController.php
+│   │   ├── NewsController.php
+│   │   └── AboutController.php
+│   ├── Models/
+│   │   └── News.php
+│   ├── Repositories/
+│   │   ├── NewsRepositoryInterface.php
+│   │   └── MockNewsRepository.php
+│   ├── Services/
+│   │   └── ViewRenderer.php
+│   └── Router/
+│       └── routes.php
+├── resources/
+│   └── views/
+│       ├── layouts/
+│       │   └── main.php
+│       ├── home/
+│       │   └── index.php
+│       ├── news/
+│       │   ├── index.php
+│       │   └── show.php
+│       └── about/
+│           └── index.php
+├── composer.json
+└── .htaccess
+</div></code></pre>
+<h3 id="22-%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0-%D0%B7%D0%B0%D0%B2%D0%B8%D1%81%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D0%B5%D0%B9">2.2 Установка зависимостей</h3>
+<p><strong>composer.json:</strong></p>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"site/mvc-card"</span>,
+    <span class="hljs-attr">"description"</span>: <span class="hljs-string">"Сайт-визитка с новостями на MVC"</span>,
+    <span class="hljs-attr">"type"</span>: <span class="hljs-string">"project"</span>,
+    <span class="hljs-attr">"require"</span>: {
+        <span class="hljs-attr">"php"</span>: <span class="hljs-string">"&gt;=8.3"</span>,
+        <span class="hljs-attr">"league/route"</span>: <span class="hljs-string">"^7.0"</span>,
+        <span class="hljs-attr">"laminas/laminas-diactoros"</span>: <span class="hljs-string">"^3.5"</span>,
+        <span class="hljs-attr">"laminas/laminas-httphandlerrunner"</span>: <span class="hljs-string">"^2.10"</span>
+    },
+    <span class="hljs-attr">"autoload"</span>: {
+        <span class="hljs-attr">"psr-4"</span>: {
+            <span class="hljs-attr">"App\\"</span>: <span class="hljs-string">"src/"</span>
+        }
+    }
+}
+</div></code></pre>
+<p><strong>Установка:</strong></p>
+<pre class="hljs"><code><div>composer require league/route laminas/laminas-diactoros laminas/laminas-httphandlerrunner
+</div></code></pre>
+<h3 id="23-%D0%BC%D0%BE%D0%B4%D0%B5%D0%BB%D1%8C-model">2.3 Модель (Model)</h3>
+<p><strong>src/Models/News.php:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-keyword">declare</span>(strict_types=<span class="hljs-number">1</span>);
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Models</span>;
+
+<span class="hljs-keyword">final</span> readonly <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">News</span>
+</span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span class="hljs-params">(
+        public int $id,
+        public string $title,
+        public string $slug,
+        public string $content,
+        public string $summary,
+        public \DateTimeImmutable $publishedAt,
+        public string $imageUrl = <span class="hljs-string">''</span>,
+    )</span> </span>{}
+}
+</div></code></pre>
+<h3 id="24-repository">2.4 Repository</h3>
+<p><strong>src/Repositories/NewsRepositoryInterface.php:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-keyword">declare</span>(strict_types=<span class="hljs-number">1</span>);
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Repositories</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Models</span>\<span class="hljs-title">News</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">NewsRepositoryInterface</span>
+</span>{
+    <span class="hljs-comment">/**
+     * <span class="hljs-doctag">@return</span> News[]
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">findAll</span><span class="hljs-params">()</span>: <span class="hljs-title">array</span></span>;
+    
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">findById</span><span class="hljs-params">(int $id)</span>: ?<span class="hljs-title">News</span></span>;
+    
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">findBySlug</span><span class="hljs-params">(string $slug)</span>: ?<span class="hljs-title">News</span></span>;
+    
+    <span class="hljs-comment">/**
+     * <span class="hljs-doctag">@return</span> News[]
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">findLatest</span><span class="hljs-params">(int $limit = <span class="hljs-number">5</span>)</span>: <span class="hljs-title">array</span></span>;
+    
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">count</span><span class="hljs-params">()</span>: <span class="hljs-title">int</span></span>;
+}
+</div></code></pre>
+<p><strong>src/Repositories/MockNewsRepository.php:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-keyword">declare</span>(strict_types=<span class="hljs-number">1</span>);
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Repositories</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Models</span>\<span class="hljs-title">News</span>;
+
+<span class="hljs-keyword">final</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MockNewsRepository</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">NewsRepositoryInterface</span>
+</span>{
+    <span class="hljs-comment">/** <span class="hljs-doctag">@var</span> News[] */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">array</span> $items;
+    
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">$this</span>-&gt;items = [
+            <span class="hljs-keyword">new</span> News(
+                id: <span class="hljs-number">1</span>,
+                title: <span class="hljs-string">'Запуск нового сайта'</span>,
+                slug: <span class="hljs-string">'launch-new-site'</span>,
+                content: <span class="hljs-string">'Мы рады представить наш обновлённый сайт-визитку! На нём вы найдёте актуальную информацию о нашей компании, последних новостях и проектах. Мы постарались сделать интерфейс максимально удобным и информативным.'</span>,
+                summary: <span class="hljs-string">'Мы рады представить наш обновлённый сайт-визитку!'</span>,
+                publishedAt: <span class="hljs-keyword">new</span> \DateTimeImmutable(<span class="hljs-string">'2026-10-28'</span>),
+                imageUrl: <span class="hljs-string">'https://picsum.photos/seed/news1/800/400'</span>,
+            ),
+            <span class="hljs-keyword">new</span> News(
+                id: <span class="hljs-number">2</span>,
+                title: <span class="hljs-string">'Новые услуги для клиентов'</span>,
+                slug: <span class="hljs-string">'new-services'</span>,
+                content: <span class="hljs-string">'С этого месяца мы предлагаем расширенный пакет услуг для наших постоянных клиентов. В него входят: бесплатные консультации, приоритетная поддержка и скидки на все новые продукты.'</span>,
+                summary: <span class="hljs-string">'Расширенный пакет услуг для постоянных клиентов.'</span>,
+                publishedAt: <span class="hljs-keyword">new</span> \DateTimeImmutable(<span class="hljs-string">'2026-10-25'</span>),
+                imageUrl: <span class="hljs-string">'https://picsum.photos/seed/news2/800/400'</span>,
+            ),
+            <span class="hljs-keyword">new</span> News(
+                id: <span class="hljs-number">3</span>,
+                title: <span class="hljs-string">'Участие в IT-конференции 2026'</span>,
+                slug: <span class="hljs-string">'it-conference-2026'</span>,
+                content: <span class="hljs-string">'Наша команда приняла участие в крупнейшей IT-конференции года. Мы поделились опытом разработки современных веб-приложений, обсудили тренды в индустрии и завели полезные знакомства.'</span>,
+                summary: <span class="hljs-string">'Наша команда на крупнейшей IT-конференции года.'</span>,
+                publishedAt: <span class="hljs-keyword">new</span> \DateTimeImmutable(<span class="hljs-string">'2026-10-20'</span>),
+                imageUrl: <span class="hljs-string">'https://picsum.photos/seed/news3/800/400'</span>,
+            ),
+            <span class="hljs-keyword">new</span> News(
+                id: <span class="hljs-number">4</span>,
+                title: <span class="hljs-string">'Обновление серверной инфраструктуры'</span>,
+                slug: <span class="hljs-string">'server-update'</span>,
+                content: <span class="hljs-string">'Мы обновили серверную инфраструктуру до PHP 8.3 и настроили современные инструменты разработки. Это позволило повысить производительность сайта на 40% и улучшить безопасность.'</span>,
+                summary: <span class="hljs-string">'Переход на PHP 8.3 и обновление инфраструктуры.'</span>,
+                publishedAt: <span class="hljs-keyword">new</span> \DateTimeImmutable(<span class="hljs-string">'2026-10-15'</span>),
+                imageUrl: <span class="hljs-string">'https://picsum.photos/seed/news4/800/400'</span>,
+            ),
+            <span class="hljs-keyword">new</span> News(
+                id: <span class="hljs-number">5</span>,
+                title: <span class="hljs-string">'Открытие нового офиса'</span>,
+                slug: <span class="hljs-string">'new-office'</span>,
+                content: <span class="hljs-string">'Мы рады сообщить об открытии нового офиса в центре города. Теперь нашим клиентам ещё удобнее добираться до нас. Приглашаем на экскурсию и знакомство с командой!'</span>,
+                summary: <span class="hljs-string">'Новый офис в центре города открыт для клиентов.'</span>,
+                publishedAt: <span class="hljs-keyword">new</span> \DateTimeImmutable(<span class="hljs-string">'2026-10-10'</span>),
+                imageUrl: <span class="hljs-string">'https://picsum.photos/seed/news5/800/400'</span>,
+            ),
+        ];
+    }
+    
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">findAll</span><span class="hljs-params">()</span>: <span class="hljs-title">array</span>
+    </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;items;
+    }
+    
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">findById</span><span class="hljs-params">(int $id)</span>: ?<span class="hljs-title">News</span>
+    </span>{
+        <span class="hljs-keyword">foreach</span> (<span class="hljs-keyword">$this</span>-&gt;items <span class="hljs-keyword">as</span> $item) {
+            <span class="hljs-keyword">if</span> ($item-&gt;id === $id) {
+                <span class="hljs-keyword">return</span> $item;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+    }
+    
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">findBySlug</span><span class="hljs-params">(string $slug)</span>: ?<span class="hljs-title">News</span>
+    </span>{
+        <span class="hljs-keyword">foreach</span> (<span class="hljs-keyword">$this</span>-&gt;items <span class="hljs-keyword">as</span> $item) {
+            <span class="hljs-keyword">if</span> ($item-&gt;slug === $slug) {
+                <span class="hljs-keyword">return</span> $item;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+    }
+    
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">findLatest</span><span class="hljs-params">(int $limit = <span class="hljs-number">5</span>)</span>: <span class="hljs-title">array</span>
+    </span>{
+        usort(<span class="hljs-keyword">$this</span>-&gt;items, fn(News $a, News $b) =&gt; $b-&gt;publishedAt &lt;=&gt; $a-&gt;publishedAt);
+        <span class="hljs-keyword">return</span> array_slice(<span class="hljs-keyword">$this</span>-&gt;items, <span class="hljs-number">0</span>, $limit);
+    }
+    
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">count</span><span class="hljs-params">()</span>: <span class="hljs-title">int</span>
+    </span>{
+        <span class="hljs-keyword">return</span> count(<span class="hljs-keyword">$this</span>-&gt;items);
+    }
+}
+</div></code></pre>
+<h3 id="25-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81-%D1%80%D0%B5%D0%BD%D0%B4%D0%B5%D1%80%D0%B8%D0%BD%D0%B3%D0%B0-%D0%BF%D1%80%D0%B5%D0%B4%D1%81%D1%82%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B9">2.5 Сервис рендеринга представлений</h3>
+<p><strong>src/Services/ViewRenderer.php:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-keyword">declare</span>(strict_types=<span class="hljs-number">1</span>);
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Services</span>;
+
+<span class="hljs-keyword">final</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ViewRenderer</span>
+</span>{
+    <span class="hljs-keyword">private</span> string $viewsPath;
+    
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span class="hljs-params">(string $viewsPath)</span>
+    </span>{
+        <span class="hljs-keyword">$this</span>-&gt;viewsPath = rtrim($viewsPath, <span class="hljs-string">'/'</span>);
+    }
+    
+    <span class="hljs-comment">/**
+     * <span class="hljs-doctag">@param</span> array&lt;string, mixed&gt; $data
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">render</span><span class="hljs-params">(string $view, array $data = [])</span>: <span class="hljs-title">string</span>
+    </span>{
+        $content = <span class="hljs-keyword">$this</span>-&gt;renderPartial($view, $data);
+        
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;renderPartial(<span class="hljs-string">'layouts/main'</span>, [
+            <span class="hljs-string">'content'</span> =&gt; $content,
+            <span class="hljs-string">'title'</span> =&gt; $data[<span class="hljs-string">'title'</span>] ?? <span class="hljs-string">'Сайт-визитка'</span>,
+        ]);
+    }
+    
+    <span class="hljs-comment">/**
+     * <span class="hljs-doctag">@param</span> array&lt;string, mixed&gt; $data
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">renderPartial</span><span class="hljs-params">(string $view, array $data = [])</span>: <span class="hljs-title">string</span>
+    </span>{
+        $file = <span class="hljs-keyword">$this</span>-&gt;viewsPath . <span class="hljs-string">'/'</span> . $view . <span class="hljs-string">'.php'</span>;
+        
+        <span class="hljs-keyword">if</span> (!file_exists($file)) {
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> \RuntimeException(<span class="hljs-string">"View not found: {$view}"</span>);
+        }
+        
+        extract($data, EXTR_SKIP);
+        
+        ob_start();
+        <span class="hljs-keyword">include</span> $file;
+        <span class="hljs-keyword">return</span> ob_get_clean();
+    }
+}
+</div></code></pre>
+<h3 id="26-%D0%BA%D0%BE%D0%BD%D1%82%D1%80%D0%BE%D0%BB%D0%BB%D0%B5%D1%80%D1%8B">2.6 Контроллеры</h3>
+<p><strong>Базовый контроллер</strong> (src/Controllers/AbstractController.php):</p>
+<pre class="hljs"><code><div><span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-keyword">declare</span>(strict_types=<span class="hljs-number">1</span>);
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Controllers</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Services</span>\<span class="hljs-title">ViewRenderer</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Laminas</span>\<span class="hljs-title">Diactoros</span>\<span class="hljs-title">Response</span>\<span class="hljs-title">HtmlResponse</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Psr</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Message</span>\<span class="hljs-title">ResponseInterface</span>;
+
+<span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AbstractController</span>
+</span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span class="hljs-params">(
+        protected readonly ViewRenderer $view,
+    )</span> </span>{}
+    
+    <span class="hljs-keyword">protected</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">render</span><span class="hljs-params">(string $view, array $data = [], int $status = <span class="hljs-number">200</span>)</span>: <span class="hljs-title">ResponseInterface</span>
+    </span>{
+        $html = <span class="hljs-keyword">$this</span>-&gt;view-&gt;render($view, $data);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> HtmlResponse($html, $status);
+    }
+    
+    <span class="hljs-keyword">protected</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">notFound</span><span class="hljs-params">(string $message = <span class="hljs-string">'Страница не найдена'</span>)</span>: <span class="hljs-title">ResponseInterface</span>
+    </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;render(<span class="hljs-string">'errors/404'</span>, [<span class="hljs-string">'message'</span> =&gt; $message], <span class="hljs-number">404</span>);
+    }
+}
+</div></code></pre>
+<p><strong>src/Controllers/HomeController.php:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-keyword">declare</span>(strict_types=<span class="hljs-number">1</span>);
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Controllers</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Repositories</span>\<span class="hljs-title">NewsRepositoryInterface</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Psr</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Message</span>\<span class="hljs-title">ResponseInterface</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Psr</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Message</span>\<span class="hljs-title">ServerRequestInterface</span>;
+
+<span class="hljs-keyword">final</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HomeController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">AbstractController</span>
+</span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span class="hljs-params">(
+        ViewRenderer $view,
+        private readonly NewsRepositoryInterface $newsRepository,
+    )</span> </span>{
+        <span class="hljs-keyword">parent</span>::__construct($view);
+    }
+    
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">index</span><span class="hljs-params">(ServerRequestInterface $request)</span>: <span class="hljs-title">ResponseInterface</span>
+    </span>{
+        $latestNews = <span class="hljs-keyword">$this</span>-&gt;newsRepository-&gt;findLatest(<span class="hljs-number">3</span>);
+        
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;render(<span class="hljs-string">'home/index'</span>, [
+            <span class="hljs-string">'title'</span> =&gt; <span class="hljs-string">'Главная — Сайт-визитка'</span>,
+            <span class="hljs-string">'latestNews'</span> =&gt; $latestNews,
+        ]);
+    }
+}
+</div></code></pre>
+<p><strong>src/Controllers/NewsController.php:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-keyword">declare</span>(strict_types=<span class="hljs-number">1</span>);
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Controllers</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Repositories</span>\<span class="hljs-title">NewsRepositoryInterface</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Psr</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Message</span>\<span class="hljs-title">ResponseInterface</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Psr</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Message</span>\<span class="hljs-title">ServerRequestInterface</span>;
+
+<span class="hljs-keyword">final</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NewsController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">AbstractController</span>
+</span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span class="hljs-params">(
+        ViewRenderer $view,
+        private readonly NewsRepositoryInterface $newsRepository,
+    )</span> </span>{
+        <span class="hljs-keyword">parent</span>::__construct($view);
+    }
+    
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">index</span><span class="hljs-params">(ServerRequestInterface $request)</span>: <span class="hljs-title">ResponseInterface</span>
+    </span>{
+        $news = <span class="hljs-keyword">$this</span>-&gt;newsRepository-&gt;findAll();
+        
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;render(<span class="hljs-string">'news/index'</span>, [
+            <span class="hljs-string">'title'</span> =&gt; <span class="hljs-string">'Новости — Сайт-визитка'</span>,
+            <span class="hljs-string">'news'</span> =&gt; $news,
+        ]);
+    }
+    
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">show</span><span class="hljs-params">(ServerRequestInterface $request, array $args)</span>: <span class="hljs-title">ResponseInterface</span>
+    </span>{
+        $slug = $args[<span class="hljs-string">'slug'</span>] ?? <span class="hljs-string">''</span>;
+        $newsItem = <span class="hljs-keyword">$this</span>-&gt;newsRepository-&gt;findBySlug($slug);
+        
+        <span class="hljs-keyword">if</span> ($newsItem === <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;notFound(<span class="hljs-string">'Новость не найдена'</span>);
+        }
+        
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;render(<span class="hljs-string">'news/show'</span>, [
+            <span class="hljs-string">'title'</span> =&gt; $newsItem-&gt;title . <span class="hljs-string">' — Сайт-визитка'</span>,
+            <span class="hljs-string">'news'</span> =&gt; $newsItem,
+        ]);
+    }
+}
+</div></code></pre>
+<p><strong>src/Controllers/AboutController.php:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-keyword">declare</span>(strict_types=<span class="hljs-number">1</span>);
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Controllers</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">Psr</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Message</span>\<span class="hljs-title">ResponseInterface</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Psr</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Message</span>\<span class="hljs-title">ServerRequestInterface</span>;
+
+<span class="hljs-keyword">final</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AboutController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">AbstractController</span>
+</span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">index</span><span class="hljs-params">(ServerRequestInterface $request)</span>: <span class="hljs-title">ResponseInterface</span>
+    </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;render(<span class="hljs-string">'about/index'</span>, [
+            <span class="hljs-string">'title'</span> =&gt; <span class="hljs-string">'О компании — Сайт-визитка'</span>,
+        ]);
+    }
+}
+</div></code></pre>
+<h3 id="27-%D0%BC%D0%B0%D1%80%D1%88%D1%80%D1%83%D1%82%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F-router">2.7 Маршрутизация (Router)</h3>
+<p><strong>src/Router/routes.php:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-keyword">declare</span>(strict_types=<span class="hljs-number">1</span>);
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Controllers</span>\<span class="hljs-title">AboutController</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Controllers</span>\<span class="hljs-title">HomeController</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Controllers</span>\<span class="hljs-title">NewsController</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">League</span>\<span class="hljs-title">Route</span>\<span class="hljs-title">Router</span>;
+
+<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Router $router)</span>: <span class="hljs-title">void</span> </span>{
+    $router-&gt;get(<span class="hljs-string">'/'</span>, [HomeController::class, <span class="hljs-string">'index'</span>])-&gt;setName(<span class="hljs-string">'home'</span>);
+    $router-&gt;get(<span class="hljs-string">'/about'</span>, [AboutController::class, <span class="hljs-string">'index'</span>])-&gt;setName(<span class="hljs-string">'about'</span>);
+    $router-&gt;get(<span class="hljs-string">'/news'</span>, [NewsController::class, <span class="hljs-string">'index'</span>])-&gt;setName(<span class="hljs-string">'news.index'</span>);
+    $router-&gt;get(<span class="hljs-string">'/news/{slug}'</span>, [NewsController::class, <span class="hljs-string">'show'</span>])-&gt;setName(<span class="hljs-string">'news.show'</span>);
+};
+</div></code></pre>
+<h3 id="28-front-controller">2.8 Front Controller</h3>
+<p><strong>public/index.php:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-keyword">declare</span>(strict_types=<span class="hljs-number">1</span>);
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Controllers</span>\<span class="hljs-title">AboutController</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Controllers</span>\<span class="hljs-title">HomeController</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Controllers</span>\<span class="hljs-title">NewsController</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Repositories</span>\<span class="hljs-title">MockNewsRepository</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Repositories</span>\<span class="hljs-title">NewsRepositoryInterface</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Services</span>\<span class="hljs-title">ViewRenderer</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Laminas</span>\<span class="hljs-title">Diactoros</span>\<span class="hljs-title">ServerRequestFactory</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Laminas</span>\<span class="hljs-title">HttpHandlerRunner</span>\<span class="hljs-title">Emitter</span>\<span class="hljs-title">SapiEmitter</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">League</span>\<span class="hljs-title">Route</span>\<span class="hljs-title">Router</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">League</span>\<span class="hljs-title">Route</span>\<span class="hljs-title">Strategy</span>\<span class="hljs-title">ApplicationStrategy</span>;
+
+<span class="hljs-keyword">require_once</span> <span class="hljs-keyword">__DIR__</span> . <span class="hljs-string">'/../vendor/autoload.php'</span>;
+
+<span class="hljs-comment">// ─── Bootstrap ───────────────────────────────────────────────────────</span>
+$basePath = dirname(<span class="hljs-keyword">__DIR__</span>);
+$viewsPath = $basePath . <span class="hljs-string">'/resources/views'</span>;
+
+<span class="hljs-comment">// Создание сервисов (без PSR-11 контейнера — ручная сборка)</span>
+$viewRenderer = <span class="hljs-keyword">new</span> ViewRenderer($viewsPath);
+$newsRepository = <span class="hljs-keyword">new</span> MockNewsRepository();
+
+<span class="hljs-comment">// Создание контроллеров с передачей зависимостей</span>
+$homeController = <span class="hljs-keyword">new</span> HomeController($viewRenderer, $newsRepository);
+$newsController = <span class="hljs-keyword">new</span> NewsController($viewRenderer, $newsRepository);
+$aboutController = <span class="hljs-keyword">new</span> AboutController($viewRenderer);
+
+<span class="hljs-comment">// Маппинг контроллеров: class =&gt; instance</span>
+$controllerMap = [
+    HomeController::class =&gt; $homeController,
+    NewsController::class =&gt; $newsController,
+    AboutController::class =&gt; $aboutController,
+];
+
+<span class="hljs-comment">// ─── HTTP Request (PSR-7) ───────────────────────────────────────────</span>
+$request = ServerRequestFactory::fromGlobals(
+    $_SERVER,
+    $_GET,
+    $_POST,
+    $_COOKIE,
+    $_FILES,
+);
+
+<span class="hljs-comment">// ─── Router setup ───────────────────────────────────────────────────</span>
+$router = <span class="hljs-keyword">new</span> Router();
+$router-&gt;setStrategy(<span class="hljs-keyword">new</span> ApplicationStrategy());
+
+<span class="hljs-comment">// Загрузка маршрутов</span>
+$routesLoader = <span class="hljs-keyword">require</span> $basePath . <span class="hljs-string">'/src/Router/routes.php'</span>;
+$routesLoader($router);
+
+<span class="hljs-comment">// ─── Dispatch ───────────────────────────────────────────────────────</span>
+<span class="hljs-keyword">try</span> {
+    $response = $router-&gt;dispatch($request);
+} <span class="hljs-keyword">catch</span> (\League\Route\Http\<span class="hljs-keyword">Exception</span>\NotFoundException $e) {
+    <span class="hljs-comment">// Простая обработка 404</span>
+    $response = <span class="hljs-keyword">new</span> \Laminas\Diactoros\Response\HtmlResponse(
+        <span class="hljs-string">'&lt;h1&gt;404 — Страница не найдена&lt;/h1&gt;&lt;p&gt;&lt;a href="/"&gt;На главную&lt;/a&gt;&lt;/p&gt;'</span>,
+        <span class="hljs-number">404</span>,
+    );
+} <span class="hljs-keyword">catch</span> (\Throwable $e) {
+    <span class="hljs-comment">// Логируем ошибку (в production — в файл/сервис)</span>
+    error_log((string) $e);
+    
+    $response = <span class="hljs-keyword">new</span> \Laminas\Diactoros\Response\HtmlResponse(
+        <span class="hljs-string">'&lt;h1&gt;500 — Внутренняя ошибка сервера&lt;/h1&gt;'</span>,
+        <span class="hljs-number">500</span>,
+    );
+}
+
+<span class="hljs-comment">// ─── Send response ──────────────────────────────────────────────────</span>
+(<span class="hljs-keyword">new</span> SapiEmitter())-&gt;emit($response);
+</div></code></pre>
+<blockquote>
+<p>⚠️ <strong>Примечание:</strong> League\Route 7.x может автоматически резолвить контроллеры из callable-строк, но без PSR-11 контейнера он не может создать экземпляры. Поэтому мы регистрируем маршруты как <code>[$instance, 'method']</code> — это передаёт уже созданные объекты.</p>
+</blockquote>
+<p><strong>Альтернативный подход</strong> — создать callable-обёртку:</p>
+<pre class="hljs"><code><div>$router-&gt;get(<span class="hljs-string">'/news/{slug}'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($request, $args)</span> <span class="hljs-title">use</span> <span class="hljs-params">($newsController)</span> </span>{
+    <span class="hljs-keyword">return</span> $newsController-&gt;show($request, $args);
+})-&gt;setName(<span class="hljs-string">'news.show'</span>);
+</div></code></pre>
+<h3 id="29-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D1%8B-%D0%BF%D1%80%D0%B5%D0%B4%D1%81%D1%82%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B9-bootstrap-5">2.9 Шаблоны представлений (Bootstrap 5)</h3>
+<p><strong>resources/views/layouts/main.php:</strong></p>
+<pre class="hljs"><code><div>&lt;!DOCTYPE html&gt;
+&lt;html lang=<span class="hljs-string">"ru"</span>&gt;
+&lt;head&gt;
+    &lt;meta charset=<span class="hljs-string">"UTF-8"</span>&gt;
+    &lt;meta name=<span class="hljs-string">"viewport"</span> content=<span class="hljs-string">"width=device-width, initial-scale=1"</span>&gt;
+    &lt;title&gt;<span class="hljs-meta">&lt;?</span>= htmlspecialchars($title) <span class="hljs-meta">?&gt;</span>&lt;/title&gt;
+    &lt;link href=<span class="hljs-string">"https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"</span> rel=<span class="hljs-string">"stylesheet"</span>&gt;
+    &lt;link href=<span class="hljs-string">"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"</span> rel=<span class="hljs-string">"stylesheet"</span>&gt;
+    &lt;style&gt;
+        .hero { background: linear-gradient(<span class="hljs-number">135</span>deg, <span class="hljs-comment">#667eea 0%, #764ba2 100%); color: white; padding: 4rem 0; }</span>
+        .card-img-top { height: <span class="hljs-number">200</span>px; object-fit: cover; }
+        .navbar-brand { font-weight: <span class="hljs-number">700</span>; }
+        footer { background-color: <span class="hljs-comment">#212529; color: #adb5bd; }</span>
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav <span class="hljs-class"><span class="hljs-keyword">class</span>="<span class="hljs-title">navbar</span> <span class="hljs-title">navbar</span>-<span class="hljs-title">expand</span>-<span class="hljs-title">lg</span> <span class="hljs-title">navbar</span>-<span class="hljs-title">dark</span> <span class="hljs-title">bg</span>-<span class="hljs-title">dark</span>"&gt;
+        &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">container</span>"&gt;
+            &lt;<span class="hljs-title">a</span> <span class="hljs-title">class</span>="<span class="hljs-title">navbar</span>-<span class="hljs-title">brand</span>" <span class="hljs-title">href</span>="/"&gt;
+                &lt;<span class="hljs-title">i</span> <span class="hljs-title">class</span>="<span class="hljs-title">bi</span> <span class="hljs-title">bi</span>-<span class="hljs-title">house</span>-<span class="hljs-title">door</span>-<span class="hljs-title">fill</span>"&gt;&lt;/<span class="hljs-title">i</span>&gt; Сайт-визитка
+            &lt;/<span class="hljs-title">a</span>&gt;
+            &lt;<span class="hljs-title">button</span> <span class="hljs-title">class</span>="<span class="hljs-title">navbar</span>-<span class="hljs-title">toggler</span>" <span class="hljs-title">type</span>="<span class="hljs-title">button</span>" <span class="hljs-title">data</span>-<span class="hljs-title">bs</span>-<span class="hljs-title">toggle</span>="<span class="hljs-title">collapse</span>" <span class="hljs-title">data</span>-<span class="hljs-title">bs</span>-<span class="hljs-title">target</span>="#<span class="hljs-title">navbarNav</span>"&gt;
+                &lt;<span class="hljs-title">span</span> <span class="hljs-title">class</span>="<span class="hljs-title">navbar</span>-<span class="hljs-title">toggler</span>-<span class="hljs-title">icon</span>"&gt;&lt;/<span class="hljs-title">span</span>&gt;
+            &lt;/<span class="hljs-title">button</span>&gt;
+            &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">collapse</span> <span class="hljs-title">navbar</span>-<span class="hljs-title">collapse</span>" <span class="hljs-title">id</span>="<span class="hljs-title">navbarNav</span>"&gt;
+                &lt;<span class="hljs-title">ul</span> <span class="hljs-title">class</span>="<span class="hljs-title">navbar</span>-<span class="hljs-title">nav</span> <span class="hljs-title">ms</span>-<span class="hljs-title">auto</span>"&gt;
+                    &lt;<span class="hljs-title">li</span> <span class="hljs-title">class</span>="<span class="hljs-title">nav</span>-<span class="hljs-title">item</span>"&gt;
+                        &lt;<span class="hljs-title">a</span> <span class="hljs-title">class</span>="<span class="hljs-title">nav</span>-<span class="hljs-title">link</span>" <span class="hljs-title">href</span>="/"&gt;Главная&lt;/<span class="hljs-title">a</span>&gt;
+                    &lt;/<span class="hljs-title">li</span>&gt;
+                    &lt;<span class="hljs-title">li</span> <span class="hljs-title">class</span>="<span class="hljs-title">nav</span>-<span class="hljs-title">item</span>"&gt;
+                        &lt;<span class="hljs-title">a</span> <span class="hljs-title">class</span>="<span class="hljs-title">nav</span>-<span class="hljs-title">link</span>" <span class="hljs-title">href</span>="/<span class="hljs-title">news</span>"&gt;Новости&lt;/<span class="hljs-title">a</span>&gt;
+                    &lt;/<span class="hljs-title">li</span>&gt;
+                    &lt;<span class="hljs-title">li</span> <span class="hljs-title">class</span>="<span class="hljs-title">nav</span>-<span class="hljs-title">item</span>"&gt;
+                        &lt;<span class="hljs-title">a</span> <span class="hljs-title">class</span>="<span class="hljs-title">nav</span>-<span class="hljs-title">link</span>" <span class="hljs-title">href</span>="/<span class="hljs-title">about</span>"&gt;О компании&lt;/<span class="hljs-title">a</span>&gt;
+                    &lt;/<span class="hljs-title">li</span>&gt;
+                &lt;/<span class="hljs-title">ul</span>&gt;
+            &lt;/<span class="hljs-title">div</span>&gt;
+        &lt;/<span class="hljs-title">div</span>&gt;
+    &lt;/<span class="hljs-title">nav</span>&gt;
+
+    &lt;<span class="hljs-title">main</span>&gt;
+        &lt;?= $<span class="hljs-title">content</span> ?&gt;
+    &lt;/<span class="hljs-title">main</span>&gt;
+
+    &lt;<span class="hljs-title">footer</span> <span class="hljs-title">class</span>="<span class="hljs-title">py</span>-4 <span class="hljs-title">mt</span>-5"&gt;
+        &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">container</span> <span class="hljs-title">text</span>-<span class="hljs-title">center</span>"&gt;
+            &lt;<span class="hljs-title">p</span> <span class="hljs-title">class</span>="<span class="hljs-title">mb</span>-0"&gt;&amp;<span class="hljs-title">copy</span>; &lt;?= <span class="hljs-title">date</span>('<span class="hljs-title">Y</span>') ?&gt; Сайт-визитка. Все права защищены.&lt;/<span class="hljs-title">p</span>&gt;
+        &lt;/<span class="hljs-title">div</span>&gt;
+    &lt;/<span class="hljs-title">footer</span>&gt;
+
+    &lt;<span class="hljs-title">script</span> <span class="hljs-title">src</span>="<span class="hljs-title">https</span>://<span class="hljs-title">cdn</span>.<span class="hljs-title">jsdelivr</span>.<span class="hljs-title">net</span>/<span class="hljs-title">npm</span>/<span class="hljs-title">bootstrap</span>@5.3.3/<span class="hljs-title">dist</span>/<span class="hljs-title">js</span>/<span class="hljs-title">bootstrap</span>.<span class="hljs-title">bundle</span>.<span class="hljs-title">min</span>.<span class="hljs-title">js</span>"&gt;&lt;/<span class="hljs-title">script</span>&gt;
+&lt;/<span class="hljs-title">body</span>&gt;
+&lt;/<span class="hljs-title">html</span>&gt;
+</span></div></code></pre>
+<p><strong>resources/views/home/index.php:</strong></p>
+<pre class="hljs"><code><div>&lt;section <span class="hljs-class"><span class="hljs-keyword">class</span>="<span class="hljs-title">hero</span> <span class="hljs-title">text</span>-<span class="hljs-title">center</span>"&gt;
+    &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">container</span>"&gt;
+        &lt;<span class="hljs-title">h1</span> <span class="hljs-title">class</span>="<span class="hljs-title">display</span>-4 <span class="hljs-title">fw</span>-<span class="hljs-title">bold</span>"&gt;Добро пожаловать!&lt;/<span class="hljs-title">h1</span>&gt;
+        &lt;<span class="hljs-title">p</span> <span class="hljs-title">class</span>="<span class="hljs-title">lead</span> <span class="hljs-title">mt</span>-3"&gt;Мы — современная компания, создающая инновационные решения&lt;/<span class="hljs-title">p</span>&gt;
+        &lt;<span class="hljs-title">a</span> <span class="hljs-title">href</span>="/<span class="hljs-title">about</span>" <span class="hljs-title">class</span>="<span class="hljs-title">btn</span> <span class="hljs-title">btn</span>-<span class="hljs-title">light</span> <span class="hljs-title">btn</span>-<span class="hljs-title">lg</span> <span class="hljs-title">mt</span>-3"&gt;
+            Узнать больше &lt;<span class="hljs-title">i</span> <span class="hljs-title">class</span>="<span class="hljs-title">bi</span> <span class="hljs-title">bi</span>-<span class="hljs-title">arrow</span>-<span class="hljs-title">right</span>"&gt;&lt;/<span class="hljs-title">i</span>&gt;
+        &lt;/<span class="hljs-title">a</span>&gt;
+    &lt;/<span class="hljs-title">div</span>&gt;
+&lt;/<span class="hljs-title">section</span>&gt;
+
+&lt;<span class="hljs-title">section</span> <span class="hljs-title">class</span>="<span class="hljs-title">py</span>-5"&gt;
+    &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">container</span>"&gt;
+        &lt;<span class="hljs-title">h2</span> <span class="hljs-title">class</span>="<span class="hljs-title">mb</span>-4"&gt;
+            &lt;<span class="hljs-title">i</span> <span class="hljs-title">class</span>="<span class="hljs-title">bi</span> <span class="hljs-title">bi</span>-<span class="hljs-title">newspaper</span>"&gt;&lt;/<span class="hljs-title">i</span>&gt; Последние новости
+        &lt;/<span class="hljs-title">h2</span>&gt;
+        &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">row</span> <span class="hljs-title">g</span>-4"&gt;
+            &lt;?<span class="hljs-title">php</span> <span class="hljs-title">foreach</span> ($<span class="hljs-title">latestNews</span> <span class="hljs-title">as</span> $<span class="hljs-title">item</span>): ?&gt;
+                &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">col</span>-<span class="hljs-title">md</span>-4"&gt;
+                    &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">card</span> <span class="hljs-title">h</span>-100 <span class="hljs-title">shadow</span>-<span class="hljs-title">sm</span>"&gt;
+                        &lt;?<span class="hljs-title">php</span> <span class="hljs-title">if</span> ($<span class="hljs-title">item</span>-&gt;<span class="hljs-title">imageUrl</span>): ?&gt;
+                            &lt;<span class="hljs-title">img</span> <span class="hljs-title">src</span>="&lt;?= <span class="hljs-title">htmlspecialchars</span>($<span class="hljs-title">item</span>-&gt;<span class="hljs-title">imageUrl</span>) ?&gt;" 
+                                 <span class="hljs-title">class</span>="<span class="hljs-title">card</span>-<span class="hljs-title">img</span>-<span class="hljs-title">top</span>" 
+                                 <span class="hljs-title">alt</span>="&lt;?= <span class="hljs-title">htmlspecialchars</span>($<span class="hljs-title">item</span>-&gt;<span class="hljs-title">title</span>) ?&gt;"&gt;
+                        &lt;?<span class="hljs-title">php</span> <span class="hljs-title">endif</span>; ?&gt;
+                        &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">card</span>-<span class="hljs-title">body</span>"&gt;
+                            &lt;<span class="hljs-title">h5</span> <span class="hljs-title">class</span>="<span class="hljs-title">card</span>-<span class="hljs-title">title</span>"&gt;&lt;?= <span class="hljs-title">htmlspecialchars</span>($<span class="hljs-title">item</span>-&gt;<span class="hljs-title">title</span>) ?&gt;&lt;/<span class="hljs-title">h5</span>&gt;
+                            &lt;<span class="hljs-title">p</span> <span class="hljs-title">class</span>="<span class="hljs-title">card</span>-<span class="hljs-title">text</span>"&gt;&lt;?= <span class="hljs-title">htmlspecialchars</span>($<span class="hljs-title">item</span>-&gt;<span class="hljs-title">summary</span>) ?&gt;&lt;/<span class="hljs-title">p</span>&gt;
+                            &lt;<span class="hljs-title">small</span> <span class="hljs-title">class</span>="<span class="hljs-title">text</span>-<span class="hljs-title">muted</span>"&gt;
+                                &lt;<span class="hljs-title">i</span> <span class="hljs-title">class</span>="<span class="hljs-title">bi</span> <span class="hljs-title">bi</span>-<span class="hljs-title">calendar</span>"&gt;&lt;/<span class="hljs-title">i</span>&gt;
+                                &lt;?= $<span class="hljs-title">item</span>-&gt;<span class="hljs-title">publishedAt</span>-&gt;<span class="hljs-title">format</span>('<span class="hljs-title">d</span>.<span class="hljs-title">m</span>.<span class="hljs-title">Y</span>') ?&gt;
+                            &lt;/<span class="hljs-title">small</span>&gt;
+                        &lt;/<span class="hljs-title">div</span>&gt;
+                        &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">card</span>-<span class="hljs-title">footer</span> <span class="hljs-title">bg</span>-<span class="hljs-title">transparent</span>"&gt;
+                            &lt;<span class="hljs-title">a</span> <span class="hljs-title">href</span>="/<span class="hljs-title">news</span>/&lt;?= <span class="hljs-title">htmlspecialchars</span>($<span class="hljs-title">item</span>-&gt;<span class="hljs-title">slug</span>) ?&gt;" <span class="hljs-title">class</span>="<span class="hljs-title">btn</span> <span class="hljs-title">btn</span>-<span class="hljs-title">outline</span>-<span class="hljs-title">primary</span>"&gt;
+                                Читать далее
+                            &lt;/<span class="hljs-title">a</span>&gt;
+                        &lt;/<span class="hljs-title">div</span>&gt;
+                    &lt;/<span class="hljs-title">div</span>&gt;
+                &lt;/<span class="hljs-title">div</span>&gt;
+            &lt;?<span class="hljs-title">php</span> <span class="hljs-title">endforeach</span>; ?&gt;
+        &lt;/<span class="hljs-title">div</span>&gt;
+        &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">text</span>-<span class="hljs-title">center</span> <span class="hljs-title">mt</span>-4"&gt;
+            &lt;<span class="hljs-title">a</span> <span class="hljs-title">href</span>="/<span class="hljs-title">news</span>" <span class="hljs-title">class</span>="<span class="hljs-title">btn</span> <span class="hljs-title">btn</span>-<span class="hljs-title">primary</span> <span class="hljs-title">btn</span>-<span class="hljs-title">lg</span>"&gt;
+                Все новости &lt;<span class="hljs-title">i</span> <span class="hljs-title">class</span>="<span class="hljs-title">bi</span> <span class="hljs-title">bi</span>-<span class="hljs-title">arrow</span>-<span class="hljs-title">right</span>"&gt;&lt;/<span class="hljs-title">i</span>&gt;
+            &lt;/<span class="hljs-title">a</span>&gt;
+        &lt;/<span class="hljs-title">div</span>&gt;
+    &lt;/<span class="hljs-title">div</span>&gt;
+&lt;/<span class="hljs-title">section</span>&gt;
+</span></div></code></pre>
+<p><strong>resources/views/news/index.php:</strong></p>
+<pre class="hljs"><code><div>&lt;div <span class="hljs-class"><span class="hljs-keyword">class</span>="<span class="hljs-title">container</span> <span class="hljs-title">py</span>-5"&gt;
+    &lt;<span class="hljs-title">h1</span> <span class="hljs-title">class</span>="<span class="hljs-title">mb</span>-4"&gt;
+        &lt;<span class="hljs-title">i</span> <span class="hljs-title">class</span>="<span class="hljs-title">bi</span> <span class="hljs-title">bi</span>-<span class="hljs-title">newspaper</span>"&gt;&lt;/<span class="hljs-title">i</span>&gt; Новости
+    &lt;/<span class="hljs-title">h1</span>&gt;
+    
+    &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">row</span> <span class="hljs-title">g</span>-4"&gt;
+        &lt;?<span class="hljs-title">php</span> <span class="hljs-title">foreach</span> ($<span class="hljs-title">news</span> <span class="hljs-title">as</span> $<span class="hljs-title">item</span>): ?&gt;
+            &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">col</span>-<span class="hljs-title">md</span>-6"&gt;
+                &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">card</span> <span class="hljs-title">shadow</span>-<span class="hljs-title">sm</span>"&gt;
+                    &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">row</span> <span class="hljs-title">g</span>-0"&gt;
+                        &lt;?<span class="hljs-title">php</span> <span class="hljs-title">if</span> ($<span class="hljs-title">item</span>-&gt;<span class="hljs-title">imageUrl</span>): ?&gt;
+                            &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">col</span>-<span class="hljs-title">md</span>-4"&gt;
+                                &lt;<span class="hljs-title">img</span> <span class="hljs-title">src</span>="&lt;?= <span class="hljs-title">htmlspecialchars</span>($<span class="hljs-title">item</span>-&gt;<span class="hljs-title">imageUrl</span>) ?&gt;" 
+                                     <span class="hljs-title">class</span>="<span class="hljs-title">img</span>-<span class="hljs-title">fluid</span> <span class="hljs-title">rounded</span>-<span class="hljs-title">start</span> <span class="hljs-title">h</span>-100" 
+                                     <span class="hljs-title">alt</span>="&lt;?= <span class="hljs-title">htmlspecialchars</span>($<span class="hljs-title">item</span>-&gt;<span class="hljs-title">title</span>) ?&gt;"
+                                     <span class="hljs-title">style</span>="<span class="hljs-title">object</span>-<span class="hljs-title">fit</span>: <span class="hljs-title">cover</span>;"&gt;
+                            &lt;/<span class="hljs-title">div</span>&gt;
+                        &lt;?<span class="hljs-title">php</span> <span class="hljs-title">endif</span>; ?&gt;
+                        &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">col</span>-<span class="hljs-title">md</span>-&lt;?= $<span class="hljs-title">item</span>-&gt;<span class="hljs-title">imageUrl</span> ? '8' : '12' ?&gt;"&gt;
+                            &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">card</span>-<span class="hljs-title">body</span>"&gt;
+                                &lt;<span class="hljs-title">h5</span> <span class="hljs-title">class</span>="<span class="hljs-title">card</span>-<span class="hljs-title">title</span>"&gt;&lt;?= <span class="hljs-title">htmlspecialchars</span>($<span class="hljs-title">item</span>-&gt;<span class="hljs-title">title</span>) ?&gt;&lt;/<span class="hljs-title">h5</span>&gt;
+                                &lt;<span class="hljs-title">p</span> <span class="hljs-title">class</span>="<span class="hljs-title">card</span>-<span class="hljs-title">text</span>"&gt;&lt;?= <span class="hljs-title">htmlspecialchars</span>($<span class="hljs-title">item</span>-&gt;<span class="hljs-title">summary</span>) ?&gt;&lt;/<span class="hljs-title">p</span>&gt;
+                                &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">d</span>-<span class="hljs-title">flex</span> <span class="hljs-title">justify</span>-<span class="hljs-title">content</span>-<span class="hljs-title">between</span> <span class="hljs-title">align</span>-<span class="hljs-title">items</span>-<span class="hljs-title">center</span>"&gt;
+                                    &lt;<span class="hljs-title">small</span> <span class="hljs-title">class</span>="<span class="hljs-title">text</span>-<span class="hljs-title">muted</span>"&gt;
+                                        &lt;<span class="hljs-title">i</span> <span class="hljs-title">class</span>="<span class="hljs-title">bi</span> <span class="hljs-title">bi</span>-<span class="hljs-title">calendar</span>"&gt;&lt;/<span class="hljs-title">i</span>&gt;
+                                        &lt;?= $<span class="hljs-title">item</span>-&gt;<span class="hljs-title">publishedAt</span>-&gt;<span class="hljs-title">format</span>('<span class="hljs-title">d</span>.<span class="hljs-title">m</span>.<span class="hljs-title">Y</span>') ?&gt;
+                                    &lt;/<span class="hljs-title">small</span>&gt;
+                                    &lt;<span class="hljs-title">a</span> <span class="hljs-title">href</span>="/<span class="hljs-title">news</span>/&lt;?= <span class="hljs-title">htmlspecialchars</span>($<span class="hljs-title">item</span>-&gt;<span class="hljs-title">slug</span>) ?&gt;" <span class="hljs-title">class</span>="<span class="hljs-title">btn</span> <span class="hljs-title">btn</span>-<span class="hljs-title">sm</span> <span class="hljs-title">btn</span>-<span class="hljs-title">primary</span>"&gt;
+                                        Читать
+                                    &lt;/<span class="hljs-title">a</span>&gt;
+                                &lt;/<span class="hljs-title">div</span>&gt;
+                            &lt;/<span class="hljs-title">div</span>&gt;
+                        &lt;/<span class="hljs-title">div</span>&gt;
+                    &lt;/<span class="hljs-title">div</span>&gt;
+                &lt;/<span class="hljs-title">div</span>&gt;
+            &lt;/<span class="hljs-title">div</span>&gt;
+        &lt;?<span class="hljs-title">php</span> <span class="hljs-title">endforeach</span>; ?&gt;
+    &lt;/<span class="hljs-title">div</span>&gt;
+&lt;/<span class="hljs-title">div</span>&gt;
+</span></div></code></pre>
+<p><strong>resources/views/news/show.php:</strong></p>
+<pre class="hljs"><code><div>&lt;article <span class="hljs-class"><span class="hljs-keyword">class</span>="<span class="hljs-title">container</span> <span class="hljs-title">py</span>-5"&gt;
+    &lt;<span class="hljs-title">nav</span> <span class="hljs-title">aria</span>-<span class="hljs-title">label</span>="<span class="hljs-title">breadcrumb</span>"&gt;
+        &lt;<span class="hljs-title">ol</span> <span class="hljs-title">class</span>="<span class="hljs-title">breadcrumb</span>"&gt;
+            &lt;<span class="hljs-title">li</span> <span class="hljs-title">class</span>="<span class="hljs-title">breadcrumb</span>-<span class="hljs-title">item</span>"&gt;&lt;<span class="hljs-title">a</span> <span class="hljs-title">href</span>="/"&gt;Главная&lt;/<span class="hljs-title">a</span>&gt;&lt;/<span class="hljs-title">li</span>&gt;
+            &lt;<span class="hljs-title">li</span> <span class="hljs-title">class</span>="<span class="hljs-title">breadcrumb</span>-<span class="hljs-title">item</span>"&gt;&lt;<span class="hljs-title">a</span> <span class="hljs-title">href</span>="/<span class="hljs-title">news</span>"&gt;Новости&lt;/<span class="hljs-title">a</span>&gt;&lt;/<span class="hljs-title">li</span>&gt;
+            &lt;<span class="hljs-title">li</span> <span class="hljs-title">class</span>="<span class="hljs-title">breadcrumb</span>-<span class="hljs-title">item</span> <span class="hljs-title">active</span>"&gt;&lt;?= <span class="hljs-title">htmlspecialchars</span>($<span class="hljs-title">news</span>-&gt;<span class="hljs-title">title</span>) ?&gt;&lt;/<span class="hljs-title">li</span>&gt;
+        &lt;/<span class="hljs-title">ol</span>&gt;
+    &lt;/<span class="hljs-title">nav</span>&gt;
+
+    &lt;<span class="hljs-title">h1</span> <span class="hljs-title">class</span>="<span class="hljs-title">mb</span>-3"&gt;&lt;?= <span class="hljs-title">htmlspecialchars</span>($<span class="hljs-title">news</span>-&gt;<span class="hljs-title">title</span>) ?&gt;&lt;/<span class="hljs-title">h1</span>&gt;
+    
+    &lt;<span class="hljs-title">p</span> <span class="hljs-title">class</span>="<span class="hljs-title">text</span>-<span class="hljs-title">muted</span>"&gt;
+        &lt;<span class="hljs-title">i</span> <span class="hljs-title">class</span>="<span class="hljs-title">bi</span> <span class="hljs-title">bi</span>-<span class="hljs-title">calendar</span>"&gt;&lt;/<span class="hljs-title">i</span>&gt;
+        &lt;?= $<span class="hljs-title">news</span>-&gt;<span class="hljs-title">publishedAt</span>-&gt;<span class="hljs-title">format</span>('<span class="hljs-title">d</span> <span class="hljs-title">F</span> <span class="hljs-title">Y</span>') ?&gt;
+    &lt;/<span class="hljs-title">p</span>&gt;
+
+    &lt;?<span class="hljs-title">php</span> <span class="hljs-title">if</span> ($<span class="hljs-title">news</span>-&gt;<span class="hljs-title">imageUrl</span>): ?&gt;
+        &lt;<span class="hljs-title">img</span> <span class="hljs-title">src</span>="&lt;?= <span class="hljs-title">htmlspecialchars</span>($<span class="hljs-title">news</span>-&gt;<span class="hljs-title">imageUrl</span>) ?&gt;" 
+             <span class="hljs-title">class</span>="<span class="hljs-title">img</span>-<span class="hljs-title">fluid</span> <span class="hljs-title">rounded</span> <span class="hljs-title">mb</span>-4" 
+             <span class="hljs-title">alt</span>="&lt;?= <span class="hljs-title">htmlspecialchars</span>($<span class="hljs-title">news</span>-&gt;<span class="hljs-title">title</span>) ?&gt;"&gt;
+    &lt;?<span class="hljs-title">php</span> <span class="hljs-title">endif</span>; ?&gt;
+
+    &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">lead</span> <span class="hljs-title">mb</span>-4"&gt;
+        &lt;?= <span class="hljs-title">htmlspecialchars</span>($<span class="hljs-title">news</span>-&gt;<span class="hljs-title">content</span>) ?&gt;
+    &lt;/<span class="hljs-title">div</span>&gt;
+
+    &lt;<span class="hljs-title">hr</span>&gt;
+    
+    &lt;<span class="hljs-title">a</span> <span class="hljs-title">href</span>="/<span class="hljs-title">news</span>" <span class="hljs-title">class</span>="<span class="hljs-title">btn</span> <span class="hljs-title">btn</span>-<span class="hljs-title">outline</span>-<span class="hljs-title">secondary</span>"&gt;
+        &lt;<span class="hljs-title">i</span> <span class="hljs-title">class</span>="<span class="hljs-title">bi</span> <span class="hljs-title">bi</span>-<span class="hljs-title">arrow</span>-<span class="hljs-title">left</span>"&gt;&lt;/<span class="hljs-title">i</span>&gt; Вернуться к новостям
+    &lt;/<span class="hljs-title">a</span>&gt;
+&lt;/<span class="hljs-title">article</span>&gt;
+</span></div></code></pre>
+<p><strong>resources/views/about/index.php:</strong></p>
+<pre class="hljs"><code><div>&lt;div <span class="hljs-class"><span class="hljs-keyword">class</span>="<span class="hljs-title">container</span> <span class="hljs-title">py</span>-5"&gt;
+    &lt;<span class="hljs-title">h1</span> <span class="hljs-title">class</span>="<span class="hljs-title">mb</span>-4"&gt;
+        &lt;<span class="hljs-title">i</span> <span class="hljs-title">class</span>="<span class="hljs-title">bi</span> <span class="hljs-title">bi</span>-<span class="hljs-title">building</span>"&gt;&lt;/<span class="hljs-title">i</span>&gt; О компании
+    &lt;/<span class="hljs-title">h1</span>&gt;
+
+    &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">row</span>"&gt;
+        &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">col</span>-<span class="hljs-title">md</span>-8"&gt;
+            &lt;<span class="hljs-title">p</span> <span class="hljs-title">class</span>="<span class="hljs-title">lead</span>"&gt;
+                Мы — команда профессионалов, которая уже более 10 лет создаёт 
+                современные решения для бизнеса.
+            &lt;/<span class="hljs-title">p</span>&gt;
+            
+            &lt;<span class="hljs-title">h3</span> <span class="hljs-title">class</span>="<span class="hljs-title">mt</span>-4"&gt;Наша миссия&lt;/<span class="hljs-title">h3</span>&gt;
+            &lt;<span class="hljs-title">p</span>&gt;
+                Помогать компаниям расти и развиваться, предоставляя качественные 
+                услуги и инновационные подходы к решению задач.
+            &lt;/<span class="hljs-title">p</span>&gt;
+
+            &lt;<span class="hljs-title">h3</span> <span class="hljs-title">class</span>="<span class="hljs-title">mt</span>-4"&gt;Наши преимущества&lt;/<span class="hljs-title">h3</span>&gt;
+            &lt;<span class="hljs-title">ul</span> <span class="hljs-title">class</span>="<span class="hljs-title">list</span>-<span class="hljs-title">group</span> <span class="hljs-title">list</span>-<span class="hljs-title">group</span>-<span class="hljs-title">flush</span>"&gt;
+                &lt;<span class="hljs-title">li</span> <span class="hljs-title">class</span>="<span class="hljs-title">list</span>-<span class="hljs-title">group</span>-<span class="hljs-title">item</span>"&gt;
+                    &lt;<span class="hljs-title">i</span> <span class="hljs-title">class</span>="<span class="hljs-title">bi</span> <span class="hljs-title">bi</span>-<span class="hljs-title">check</span>-<span class="hljs-title">circle</span>-<span class="hljs-title">fill</span> <span class="hljs-title">text</span>-<span class="hljs-title">success</span>"&gt;&lt;/<span class="hljs-title">i</span>&gt;
+                    Опыт работы более 10 лет
+                &lt;/<span class="hljs-title">li</span>&gt;
+                &lt;<span class="hljs-title">li</span> <span class="hljs-title">class</span>="<span class="hljs-title">list</span>-<span class="hljs-title">group</span>-<span class="hljs-title">item</span>"&gt;
+                    &lt;<span class="hljs-title">i</span> <span class="hljs-title">class</span>="<span class="hljs-title">bi</span> <span class="hljs-title">bi</span>-<span class="hljs-title">check</span>-<span class="hljs-title">circle</span>-<span class="hljs-title">fill</span> <span class="hljs-title">text</span>-<span class="hljs-title">success</span>"&gt;&lt;/<span class="hljs-title">i</span>&gt;
+                    Команда сертифицированных специалистов
+                &lt;/<span class="hljs-title">li</span>&gt;
+                &lt;<span class="hljs-title">li</span> <span class="hljs-title">class</span>="<span class="hljs-title">list</span>-<span class="hljs-title">group</span>-<span class="hljs-title">item</span>"&gt;
+                    &lt;<span class="hljs-title">i</span> <span class="hljs-title">class</span>="<span class="hljs-title">bi</span> <span class="hljs-title">bi</span>-<span class="hljs-title">check</span>-<span class="hljs-title">circle</span>-<span class="hljs-title">fill</span> <span class="hljs-title">text</span>-<span class="hljs-title">success</span>"&gt;&lt;/<span class="hljs-title">i</span>&gt;
+                    Индивидуальный подход к каждому клиенту
+                &lt;/<span class="hljs-title">li</span>&gt;
+                &lt;<span class="hljs-title">li</span> <span class="hljs-title">class</span>="<span class="hljs-title">list</span>-<span class="hljs-title">group</span>-<span class="hljs-title">item</span>"&gt;
+                    &lt;<span class="hljs-title">i</span> <span class="hljs-title">class</span>="<span class="hljs-title">bi</span> <span class="hljs-title">bi</span>-<span class="hljs-title">check</span>-<span class="hljs-title">circle</span>-<span class="hljs-title">fill</span> <span class="hljs-title">text</span>-<span class="hljs-title">success</span>"&gt;&lt;/<span class="hljs-title">i</span>&gt;
+                    Поддержка 24/7
+                &lt;/<span class="hljs-title">li</span>&gt;
+            &lt;/<span class="hljs-title">ul</span>&gt;
+        &lt;/<span class="hljs-title">div</span>&gt;
+        
+        &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">col</span>-<span class="hljs-title">md</span>-4"&gt;
+            &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">card</span> <span class="hljs-title">shadow</span>-<span class="hljs-title">sm</span>"&gt;
+                &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">card</span>-<span class="hljs-title">body</span>"&gt;
+                    &lt;<span class="hljs-title">h5</span> <span class="hljs-title">class</span>="<span class="hljs-title">card</span>-<span class="hljs-title">title</span>"&gt;
+                        &lt;<span class="hljs-title">i</span> <span class="hljs-title">class</span>="<span class="hljs-title">bi</span> <span class="hljs-title">bi</span>-<span class="hljs-title">telephone</span>-<span class="hljs-title">fill</span>"&gt;&lt;/<span class="hljs-title">i</span>&gt; Контакты
+                    &lt;/<span class="hljs-title">h5</span>&gt;
+                    &lt;<span class="hljs-title">ul</span> <span class="hljs-title">class</span>="<span class="hljs-title">list</span>-<span class="hljs-title">unstyled</span>"&gt;
+                        &lt;<span class="hljs-title">li</span> <span class="hljs-title">class</span>="<span class="hljs-title">mb</span>-2"&gt;
+                            &lt;<span class="hljs-title">i</span> <span class="hljs-title">class</span>="<span class="hljs-title">bi</span> <span class="hljs-title">bi</span>-<span class="hljs-title">geo</span>-<span class="hljs-title">alt</span>-<span class="hljs-title">fill</span> <span class="hljs-title">text</span>-<span class="hljs-title">primary</span>"&gt;&lt;/<span class="hljs-title">i</span>&gt;
+                            г. Москва, ул. Примерная, 42
+                        &lt;/<span class="hljs-title">li</span>&gt;
+                        &lt;<span class="hljs-title">li</span> <span class="hljs-title">class</span>="<span class="hljs-title">mb</span>-2"&gt;
+                            &lt;<span class="hljs-title">i</span> <span class="hljs-title">class</span>="<span class="hljs-title">bi</span> <span class="hljs-title">bi</span>-<span class="hljs-title">envelope</span>-<span class="hljs-title">fill</span> <span class="hljs-title">text</span>-<span class="hljs-title">primary</span>"&gt;&lt;/<span class="hljs-title">i</span>&gt;
+                            <span class="hljs-title">info</span>@<span class="hljs-title">example</span>.<span class="hljs-title">com</span>
+                        &lt;/<span class="hljs-title">li</span>&gt;
+                        &lt;<span class="hljs-title">li</span> <span class="hljs-title">class</span>="<span class="hljs-title">mb</span>-2"&gt;
+                            &lt;<span class="hljs-title">i</span> <span class="hljs-title">class</span>="<span class="hljs-title">bi</span> <span class="hljs-title">bi</span>-<span class="hljs-title">telephone</span>-<span class="hljs-title">fill</span> <span class="hljs-title">text</span>-<span class="hljs-title">primary</span>"&gt;&lt;/<span class="hljs-title">i</span>&gt;
+                            +7 (495) 123-45-67
+                        &lt;/<span class="hljs-title">li</span>&gt;
+                    &lt;/<span class="hljs-title">ul</span>&gt;
+                &lt;/<span class="hljs-title">div</span>&gt;
+            &lt;/<span class="hljs-title">div</span>&gt;
+        &lt;/<span class="hljs-title">div</span>&gt;
+    &lt;/<span class="hljs-title">div</span>&gt;
+&lt;/<span class="hljs-title">div</span>&gt;
+</span></div></code></pre>
+<p><strong>resources/views/errors/404.php:</strong></p>
+<pre class="hljs"><code><div>&lt;div <span class="hljs-class"><span class="hljs-keyword">class</span>="<span class="hljs-title">container</span> <span class="hljs-title">py</span>-5 <span class="hljs-title">text</span>-<span class="hljs-title">center</span>"&gt;
+    &lt;<span class="hljs-title">h1</span> <span class="hljs-title">class</span>="<span class="hljs-title">display</span>-1 <span class="hljs-title">text</span>-<span class="hljs-title">muted</span>"&gt;404&lt;/<span class="hljs-title">h1</span>&gt;
+    &lt;<span class="hljs-title">h2</span>&gt;Страница не найдена&lt;/<span class="hljs-title">h2</span>&gt;
+    &lt;<span class="hljs-title">p</span> <span class="hljs-title">class</span>="<span class="hljs-title">lead</span>"&gt;&lt;?= <span class="hljs-title">htmlspecialchars</span>($<span class="hljs-title">message</span> ?? 'Запрашиваемая страница не существует.') ?&gt;&lt;/<span class="hljs-title">p</span>&gt;
+    &lt;<span class="hljs-title">a</span> <span class="hljs-title">href</span>="/" <span class="hljs-title">class</span>="<span class="hljs-title">btn</span> <span class="hljs-title">btn</span>-<span class="hljs-title">primary</span> <span class="hljs-title">btn</span>-<span class="hljs-title">lg</span>"&gt;
+        &lt;<span class="hljs-title">i</span> <span class="hljs-title">class</span>="<span class="hljs-title">bi</span> <span class="hljs-title">bi</span>-<span class="hljs-title">house</span>"&gt;&lt;/<span class="hljs-title">i</span>&gt; На главную
+    &lt;/<span class="hljs-title">a</span>&gt;
+&lt;/<span class="hljs-title">div</span>&gt;
+</span></div></code></pre>
+<h3 id="210-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B-%D0%B2%D0%B5%D0%B1-%D1%81%D0%B5%D1%80%D0%B2%D0%B5%D1%80%D0%B0">2.10 Файлы веб-сервера</h3>
+<p><strong>public/.htaccess:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-section">&lt;IfModule mod_rewrite.c&gt;</span>
+    <span class="hljs-attribute"><span class="hljs-nomarkup">RewriteEngine</span></span> <span class="hljs-literal">On</span>
+    <span class="hljs-attribute"><span class="hljs-nomarkup">RewriteCond</span></span> <span class="hljs-variable">%{REQUEST_FILENAME}</span> !-f
+    <span class="hljs-attribute"><span class="hljs-nomarkup">RewriteCond</span></span> <span class="hljs-variable">%{REQUEST_FILENAME}</span> !-d
+    <span class="hljs-attribute"><span class="hljs-nomarkup">RewriteRule</span></span> ^(.*)$ index.php<span class="hljs-meta"> [QSA,L]</span>
+<span class="hljs-section">&lt;/IfModule&gt;</span>
+</div></code></pre>
+<h3 id="211-%D0%B7%D0%B0%D0%BF%D1%83%D1%81%D0%BA">2.11 Запуск</h3>
+<pre class="hljs"><code><div><span class="hljs-built_in">cd</span> public
+php -S localhost:8000
+</div></code></pre>
+<p>Откройте браузер: <code>http://localhost:8000</code></p>
+<hr>
+<h2 id="%F0%9F%8E%AF-%D1%87%D0%B0%D1%81%D1%82%D1%8C-3-%D1%81%D0%B0%D0%BC%D0%BE%D1%81%D1%82%D0%BE%D1%8F%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0--%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D1%8F">🎯 Часть 3: Самостоятельная работа / Задания</h2>
+<h3 id="%E2%AD%90-%D1%83%D1%80%D0%BE%D0%B2%D0%B5%D0%BD%D1%8C-1-%D0%B1%D0%B0%D0%B7%D0%BE%D0%B2%D1%8B%D0%B5-%D0%B4%D0%BE%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B8-%D0%BE%D0%B1%D1%8F%D0%B7%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE">⭐ Уровень 1: Базовые доработки (обязательно)</h3>
+<h4 id="%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-11-%D0%BA%D0%BE%D0%BD%D1%82%D0%B0%D0%BA%D1%82%D1%8B">Задание 1.1: Контакты</h4>
+<p>Создайте страницу <code>/contacts</code> с контактной формой (HTML, без отправки).</p>
+<ul>
+<li>Создайте <code>ContactController</code></li>
+<li>Шаблон <code>contacts/index.php</code> с формой Bootstrap 5</li>
+<li>Добавьте ссылку в навигации</li>
+</ul>
+<p><strong>Критерии:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox0"><label for="checkbox0">Маршрут работает</label></li>
+<li><input type="checkbox" id="checkbox1"><label for="checkbox1">Форма использует Bootstrap 5</label></li>
+<li><input type="checkbox" id="checkbox2"><label for="checkbox2">Используется общий layout</label></li>
+</ul>
+<h4 id="%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-12-%D1%85%D0%BB%D0%B5%D0%B1%D0%BD%D1%8B%D0%B5-%D0%BA%D1%80%D0%BE%D1%88%D0%BA%D0%B8-breadcrumbs">Задание 1.2: Хлебные крошки (breadcrumbs)</h4>
+<p>Добавьте breadcrumbs на все страницы:</p>
+<ul>
+<li>Главная</li>
+<li>Главная → Новости</li>
+<li>Главная → Новости → Название новости</li>
+<li>Главная → О компании</li>
+</ul>
+<h4 id="%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-13-%D0%BF%D0%B0%D0%B3%D0%B8%D0%BD%D0%B0%D1%86%D0%B8%D1%8F-%D0%BD%D0%BE%D0%B2%D0%BE%D1%81%D1%82%D0%B5%D0%B9">Задание 1.3: Пагинация новостей</h4>
+<p>Реализуйте постраничную навигацию для списка новостей:</p>
+<ul>
+<li>Добавьте параметр <code>?page=N</code> к маршруту <code>/news</code></li>
+<li>Показывать 2 новости на странице</li>
+<li>Навигация: «Предыдущая | 1 2 3 | Следующая»</li>
+</ul>
+<p><strong>Подсказка:</strong></p>
+<pre class="hljs"><code><div>$page = (int)($request-&gt;getQueryParams()[<span class="hljs-string">'page'</span>] ?? <span class="hljs-number">1</span>);
+$perPage = <span class="hljs-number">2</span>;
+$offset = ($page - <span class="hljs-number">1</span>) * $perPage;
+</div></code></pre>
+<h3 id="%E2%AD%90%E2%AD%90-%D1%83%D1%80%D0%BE%D0%B2%D0%B5%D0%BD%D1%8C-2-%D0%BF%D1%80%D0%BE%D0%B4%D0%B2%D0%B8%D0%BD%D1%83%D1%82%D1%8B%D0%B5-%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D1%8F">⭐⭐ Уровень 2: Продвинутые задания</h3>
+<h4 id="%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-21-%D0%BA%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D0%B8-%D0%BD%D0%BE%D0%B2%D0%BE%D1%81%D1%82%D0%B5%D0%B9">Задание 2.1: Категории новостей</h4>
+<p>Добавьте категории для новостей:</p>
+<pre class="hljs"><code><div><span class="hljs-comment">// Model</span>
+<span class="hljs-keyword">final</span> readonly <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">News</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span class="hljs-params">(
+        // ... existing fields ...
+        public string $category = <span class="hljs-string">'Общее'</span>,
+    )</span> </span>{}
+}
+</div></code></pre>
+<p><strong>Требования:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox3"><label for="checkbox3">Фильтр по категориям: </label><code>/news?category=Новости+компании</code></li>
+<li><input type="checkbox" id="checkbox4"><label for="checkbox4">Страница категории: </label><code>/news/category/{slug}</code></li>
+<li><input type="checkbox" id="checkbox5"><label for="checkbox5">Вывод списка категорий в sidebar</label></li>
+<li><input type="checkbox" id="checkbox6"><label for="checkbox6">Счётчик новостей по категориям</label></li>
+</ul>
+<h4 id="%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-22-%D0%BF%D0%BE%D0%B8%D1%81%D0%BA-%D0%BF%D0%BE-%D0%BD%D0%BE%D0%B2%D0%BE%D1%81%D1%82%D1%8F%D0%BC">Задание 2.2: Поиск по новостям</h4>
+<p>Добавьте форму поиска в шапку сайта:</p>
+<ul>
+<li>Поиск по заголовку и содержимому</li>
+<li>URL: <code>/news?q=поисковый+запрос</code></li>
+<li>Подсветка найденных слов (используйте <code>&lt;mark&gt;</code>)</li>
+</ul>
+<h4 id="%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-23-%D0%BF%D0%BE%D1%81%D0%BB%D0%B5%D0%B4%D0%BD%D0%B8%D0%B5-%D0%BD%D0%BE%D0%B2%D0%BE%D1%81%D1%82%D0%B8-%D0%B2-%D1%81%D0%B0%D0%B9%D0%B4%D0%B1%D0%B0%D1%80%D0%B5">Задание 2.3: Последние новости в сайдбаре</h4>
+<p>На странице <code>/news</code> добавьте sidebar со списком последних 5 новостей:</p>
+<pre class="hljs"><code><div>┌─────────────────────────────────────┐
+│ Новости              │ Последние │
+│ [карточка]           │ новости   │
+│ [карточка]           │ - Новость1│
+│ [карточка]           │ - Новость2│
+│                      │ - Новость3│
+└─────────────────────────────────────┘
+</div></code></pre>
+<h3 id="%E2%AD%90%E2%AD%90%E2%AD%90-%D1%83%D1%80%D0%BE%D0%B2%D0%B5%D0%BD%D1%8C-3-%D0%B0%D1%80%D1%85%D0%B8%D1%82%D0%B5%D0%BA%D1%82%D1%83%D1%80%D0%BD%D1%8B%D0%B5-%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D1%8F">⭐⭐⭐ Уровень 3: Архитектурные задания</h3>
+<h4 id="%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-31-%D0%B7%D0%B0%D0%BC%D0%B5%D0%BD%D0%B0-mock-%D0%BD%D0%B0-json-%D1%85%D1%80%D0%B0%D0%BD%D0%B8%D0%BB%D0%B8%D1%89%D0%B5">Задание 3.1: Замена Mock на JSON-хранилище</h4>
+<p>Создайте <code>JsonNewsRepository</code>, который читает новости из файла <code>data/news.json</code>:</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">final</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">JsonNewsRepository</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">NewsRepositoryInterface</span>
+</span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span class="hljs-params">(
+        private readonly string $filePath,
+    )</span> </span>{}
+    
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">findAll</span><span class="hljs-params">()</span>: <span class="hljs-title">array</span>
+    </span>{
+        $data = json_decode(file_get_contents(<span class="hljs-keyword">$this</span>-&gt;filePath), <span class="hljs-keyword">true</span>);
+        <span class="hljs-keyword">return</span> array_map(fn(<span class="hljs-keyword">array</span> $item) =&gt; News::fromArray($item), $data);
+    }
+}
+</div></code></pre>
+<p><strong>Требования:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox7"><label for="checkbox7">Реализовать </label><code>News::fromArray(array): self</code> (статическая фабрика)</li>
+<li><input type="checkbox" id="checkbox8"><label for="checkbox8">Обработка отсутствующего файла</label></li>
+<li><input type="checkbox" id="checkbox9"><label for="checkbox9">Кэширование прочитанных данных</label></li>
+</ul>
+<h4 id="%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-32-middleware">Задание 3.2: Middleware</h4>
+<p>Создайте middleware для:</p>
+<p><strong>a) Логирование запросов</strong> (создайте <code>src/Middleware/RequestLoggerMiddleware.php</code>):</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">final</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RequestLoggerMiddleware</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">MiddlewareInterface</span>
+</span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">process</span><span class="hljs-params">(
+        ServerRequestInterface $request,
+        RequestHandlerInterface $handler,
+    )</span>: <span class="hljs-title">ResponseInterface</span> </span>{
+        $start = microtime(<span class="hljs-keyword">true</span>);
+        $response = $handler-&gt;handle($request);
+        $duration = microtime(<span class="hljs-keyword">true</span>) - $start;
+        
+        error_log(sprintf(
+            <span class="hljs-string">'[%s] %s %s — %d — %.3fs'</span>,
+            date(<span class="hljs-string">'Y-m-d H:i:s'</span>),
+            $request-&gt;getMethod(),
+            $request-&gt;getUri()-&gt;getPath(),
+            $response-&gt;getStatusCode(),
+            $duration,
+        ));
+        
+        <span class="hljs-keyword">return</span> $response;
+    }
+}
+</div></code></pre>
+<p><strong>b) Добавление заголовков безопасности</strong> (<code>SecurityHeadersMiddleware</code>):</p>
+<ul>
+<li><code>X-Content-Type-Options: nosniff</code></li>
+<li><code>X-Frame-Options: DENY</code></li>
+<li><code>X-XSS-Protection: 1; mode=block</code></li>
+</ul>
+<p>Подключите middleware к роутеру:</p>
+<pre class="hljs"><code><div>$router-&gt;middleware(<span class="hljs-keyword">new</span> RequestLoggerMiddleware());
+$router-&gt;middleware(<span class="hljs-keyword">new</span> SecurityHeadersMiddleware());
+</div></code></pre>
+<h4 id="%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-33-%D1%81%D0%BE%D0%B1%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D1%8B%D0%B9-psr-11-%D0%BA%D0%BE%D0%BD%D1%82%D0%B5%D0%B9%D0%BD%D0%B5%D1%80">Задание 3.3: Собственный PSR-11 контейнер</h4>
+<p>Замените ручное создание объектов на простой контейнер:</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">final</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Container</span> <span class="hljs-keyword">implements</span> \<span class="hljs-title">Psr</span>\<span class="hljs-title">Container</span>\<span class="hljs-title">ContainerInterface</span>
+</span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">array</span> $services = [];
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">array</span> $factories = [];
+    
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">set</span><span class="hljs-params">(string $id, callable $factory)</span>: <span class="hljs-title">void</span>
+    </span>{
+        <span class="hljs-keyword">$this</span>-&gt;factories[$id] = $factory;
+    }
+    
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get</span><span class="hljs-params">(string $id)</span>: <span class="hljs-title">mixed</span>
+    </span>{
+        <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">isset</span>(<span class="hljs-keyword">$this</span>-&gt;services[$id])) {
+            <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">isset</span>(<span class="hljs-keyword">$this</span>-&gt;factories[$id])) {
+                <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> \RuntimeException(<span class="hljs-string">"Service not found: {$id}"</span>);
+            }
+            <span class="hljs-keyword">$this</span>-&gt;services[$id] = (<span class="hljs-keyword">$this</span>-&gt;factories[$id])(<span class="hljs-keyword">$this</span>);
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;services[$id];
+    }
+    
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">has</span><span class="hljs-params">(string $id)</span>: <span class="hljs-title">bool</span>
+    </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">isset</span>(<span class="hljs-keyword">$this</span>-&gt;factories[$id]);
+    }
+}
+</div></code></pre>
+<p>Используйте его в <code>index.php</code> для регистрации сервисов.</p>
+<h3 id="%F0%9F%8F%86-%D0%B1%D0%BE%D0%BD%D1%83%D1%81%D0%BD%D1%8B%D0%B5-%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D1%8F-%D0%BF%D0%BE-%D0%B6%D0%B5%D0%BB%D0%B0%D0%BD%D0%B8%D1%8E">🏆 Бонусные задания (по желанию)</h3>
+<table>
+<thead>
+<tr>
+<th>Задание</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RSS-лента</strong></td>
+<td>Добавьте <code>/news/rss</code> с XML-фидом новостей</td>
+</tr>
+<tr>
+<td><strong>Кэширование</strong></td>
+<td>Добавьте файловое кэширование страниц через middleware</td>
+</tr>
+<tr>
+<td><strong>Админка</strong></td>
+<td>Создайте <code>/admin</code> с CRUD для новостей (форма добавления/редактирования)</td>
+</tr>
+<tr>
+<td><strong>Многоязычность</strong></td>
+<td>Поддержка <code>/ru/</code> и <code>/en/</code> маршрутов</td>
+</tr>
+<tr>
+<td><strong>API</strong></td>
+<td>JSON API для новостей через <code>JsonStrategy</code> в League/Route</td>
+</tr>
+<tr>
+<td><strong>Комментарии</strong></td>
+<td>Модель и репозиторий для комментариев к новостям</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="%F0%9F%93%8B-%D1%87%D0%B5%D0%BA-%D0%BB%D0%B8%D1%81%D1%82-%D0%B4%D0%BB%D1%8F-%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D1%80%D0%BA%D0%B8">📋 Чек-лист для проверки</h2>
+<ul>
+<li><input type="checkbox" id="checkbox10"><label for="checkbox10">Сайт запускается через </label><code>php -S localhost:8000</code></li>
+<li><input type="checkbox" id="checkbox11"><label for="checkbox11">Работают маршруты </label><code>/</code>, <code>/news</code>, <code>/news/{slug}</code>, <code>/about</code></li>
+<li><input type="checkbox" id="checkbox12"><label for="checkbox12">404 страница для несуществующих URL</label></li>
+<li><input type="checkbox" id="checkbox13"><label for="checkbox13">Bootstrap 5 используется на всех страницах</label></li>
+<li><input type="checkbox" id="checkbox14"><label for="checkbox14">Используется PSR-7 (laminas-diactoros)</label></li>
+<li><input type="checkbox" id="checkbox15"><label for="checkbox15">League/Route v7 настроен и работает</label></li>
+<li><input type="checkbox" id="checkbox16"><label for="checkbox16">Repository абстрагирует данные</label></li>
+<li><input type="checkbox" id="checkbox17"><label for="checkbox17">Mock-данные для новостей</label></li>
+<li><input type="checkbox" id="checkbox18"><label for="checkbox18">ViewRenderer рендерит шаблоны</label></li>
+<li><input type="checkbox" id="checkbox19"><label for="checkbox19">Контроллеры не содержат логику работы с данными</label></li>
+<li><input type="checkbox" id="checkbox20"><label for="checkbox20">Модели — readonly DTO</label></li>
+<li><input type="checkbox" id="checkbox21"><label for="checkbox21">Используются PHP 8.3+ возможности (readonly, promoted properties, union types)</label></li>
+</ul>
+<hr>
+<h2 id="%F0%9F%93%96-%D0%B4%D0%BE%D0%BF%D0%BE%D0%BB%D0%BD%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5-%D0%BC%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%B0%D0%BB%D1%8B">📖 Дополнительные материалы</h2>
+<ul>
+<li><a href="https://route.thephpleague.com/">League/Route Docs</a></li>
+<li><a href="https://www.php-fig.org/psr/psr-7/">PSR-7 Specification</a></li>
+<li><a href="https://www.php-fig.org/psr/psr-15/">PSR-15 Middleware</a></li>
+<li><a href="https://getbootstrap.com/docs/5.3/">Bootstrap 5 Docs</a></li>
+<li><a href="https://www.php.net/releases/8.3/en.php">PHP 8.3 Release</a></li>
+</ul>
+
+</body>
+</html>
